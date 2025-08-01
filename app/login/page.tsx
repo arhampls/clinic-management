@@ -1,10 +1,11 @@
 "use client"
 
+
 import { useSearchParams } from "next/navigation"
 import { LoginForm } from "@/components/login-form"
-import { useEffect, useState } from "react"
+import { useEffect, useState, Suspense } from "react"
 
-export default function LoginPage() {
+function LoginPageInner() {
   const searchParams = useSearchParams()
   const [message, setMessage] = useState("")
 
@@ -20,5 +21,13 @@ export default function LoginPage() {
         <LoginForm onShowRegister={() => {}} />
       </div>
     </div>
+  )
+}
+
+export default function LoginPage() {
+  return (
+    <Suspense>
+      <LoginPageInner />
+    </Suspense>
   )
 }
