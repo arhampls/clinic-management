@@ -1,5 +1,6 @@
+
 [build]
-  command = "pnpm run build"
+  command = "pnpm exec prisma generate && pnpm run build"
   publish = ".next"
 
 [dev]
