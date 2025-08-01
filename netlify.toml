@@ -1,0 +1,14 @@
+[build]
+  command = "pnpm run build"
+  publish = ".next"
+
+[dev]
+  command = "pnpm run dev"
+  port = 3000
+
+[functions]
+  node_bundler = "esbuild"
+
+[env]
+  DATABASE_URL = "YOUR_PRODUCTION_DATABASE_URL"
+  JWT_SECRET = "changeme"
