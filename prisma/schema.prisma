@@ -1,0 +1,79 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+  output   = "../lib/generated/prisma"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model Clinic {
+  id        String   @id @default(uuid())
+  name      String
+  users     User[]
+  patients  Patient[]
+  equipment Equipment[]
+  appointments Appointment[]
+  createdAt DateTime @default(now())
+}
+
+model User {
+  id        String   @id @default(uuid())
+  email     String   @unique
+  password  String
+  clinicId  String
+  clinic    Clinic   @relation(fields: [clinicId], references: [id])
+  createdAt DateTime @default(now())
+}
+
+model Patient {
+  id        String   @id @default(uuid())
+  name      String
+  clinicId  String
+  clinic    Clinic   @relation(fields: [clinicId], references: [id])
+  createdAt DateTime @default(now())
+  phone     String?
+  dateOfBirth String?
+  gender    String?
+  condition String?
+  address   String?
+  emergencyContactName String?
+  emergencyContactNumber String?
+  notes     String?
+}
+
+model Equipment {
+  id                String   @id @default(uuid())
+  name              String
+  model             String?
+  manufacturer      String?
+  serialNumber      String?
+  purchaseDate      String?
+  warrantyExpiry    String?
+  status            String   @default("Operational")
+  location          String?
+  maintenanceInterval String? @default("90")
+  notes             String?
+  clinicId          String
+  clinic            Clinic   @relation(fields: [clinicId], references: [id])
+  createdAt         DateTime @default(now())
+}
+
+model Appointment {
+  id        String   @id @default(uuid())
+  clinicId  String
+  clinic    Clinic   @relation(fields: [clinicId], references: [id])
+  patientId String   // Now just a string, not a foreign key
+  date      DateTime
+  type      String?
+  notes     String?
+  doctor    String?
+  createdAt DateTime @default(now())
+}
