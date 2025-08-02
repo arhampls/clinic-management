@@ -108,37 +108,8 @@ const EquipmentList = () => {
     setShowEditDialog(true)
   }
 
-  const handleUpdateEquipment = async (updatedEquipment: any) => {
-    try {
-      const token = localStorage.getItem("token");
-      if (!token) {
-        setError("Not authenticated");
-        return;
-      }
-      const res = await fetch(`/api/clinic/equipment?id=${updatedEquipment.id}`, {
-        method: "PUT",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
-        },
-        body: JSON.stringify(updatedEquipment),
-      });
-      if (!res.ok) {
-        const data = await res.json();
-        setError(data.error || "Failed to update equipment");
-        return;
-      }
-      // Refetch equipment from backend
-      const res2 = await fetch("/api/clinic/equipment", {
-        headers: { Authorization: `Bearer ${token}` },
-      });
-      const data2 = await res2.json();
-      if (res2.ok) {
-        setEquipment(data2.equipment);
-      }
-    } catch {
-      setError("Failed to update equipment");
-    }
+  const handleUpdateEquipment = (updatedEquipment: any) => {
+    setEquipment(equipment.map((item) => (item.id === updatedEquipment.id ? updatedEquipment : item)))
   }
 
   const handleRemoveEquipment = async (id: number) => {
