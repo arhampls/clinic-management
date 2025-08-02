@@ -130,17 +130,7 @@ export function EquipmentDetailsDialog({ open, onOpenChange, equipment }: Equipm
           </div>
         </div>
 
-        <div className="flex justify-between pt-4">
-          <Button
-            variant="outline"
-            onClick={() => {
-              onOpenChange(false)
-              // Trigger edit dialog - this will be handled by parent component
-              if (equipment.onEdit) equipment.onEdit(equipment)
-            }}
-          >
-            Edit
-          </Button>
+        <div className="flex justify-end pt-4">
           <Button onClick={() => onOpenChange(false)}>Close</Button>
         </div>
       </DialogContent>

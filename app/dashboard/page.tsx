@@ -157,21 +157,23 @@ export default function DashboardPage() {
             <CardHeader>
               <CardTitle className="flex items-center gap-2">
                 <Settings className="h-5 w-5" />
-                Equipment Needing Maintenance
+                Equipment Issues
               </CardTitle>
             </CardHeader>
             <CardContent className="space-y-4">
               {loading ? (
                 <div>Loading...</div>
-              ) : stats.equipmentNeedingMaintenance.length === 0 ? (
-                <div className="text-gray-500">No equipment needs maintenance.</div>
+              ) : stats.equipmentNeedingMaintenance.filter((eq: any) => eq.status === 'Maintenance Required' || eq.status === 'Under Maintenance').length === 0 ? (
+                <div className="text-gray-500">No equipment issues.</div>
               ) : (
-                stats.equipmentNeedingMaintenance.map((eq: any) => (
-                  <div key={eq.id} className="flex items-center gap-3">
-                    <div className="w-2 h-2 bg-red-500 rounded-full"></div>
-                    <span className="text-sm">{eq.name} - {eq.status}</span>
-                  </div>
-                ))
+                stats.equipmentNeedingMaintenance
+                  .filter((eq: any) => eq.status === 'Maintenance Required' || eq.status === 'Under Maintenance')
+                  .map((eq: any) => (
+                    <div key={eq.id} className="flex items-center gap-3">
+                      <div className="w-2 h-2 bg-red-500 rounded-full"></div>
+                      <span className="text-sm">{eq.name} - {eq.status}</span>
+                    </div>
+                  ))
               )}
             </CardContent>
           </Card>

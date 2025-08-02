@@ -170,7 +170,6 @@ const EquipmentList = () => {
                   </div>
                 </div>
                 <div className="flex items-center gap-3">
-                  {/* <Badge className={getStatusColor(item.status)}>{item.status}</Badge> */}
                   <Button variant="outline" size="sm" onClick={() => handleViewDetails(item)}>
                     View Details
                   </Button>
