@@ -1,3 +1,39 @@
+export async function PUT(req: NextRequest) {
+  const auth = req.headers.get('authorization');
+  if (!auth || !auth.startsWith('Bearer ')) {
+    return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+  }
+  try {
+    const token = auth.split(' ')[1];
+    const payload = jwt.verify(token, JWT_SECRET) as { userId: string; clinicId: string };
+    const body = await req.json();
+    let { id, ...updateData } = body;
+    // Remove fields that should not be updated
+    delete updateData.clinicId;
+    delete updateData.createdAt;
+    delete updateData.customMaintenanceDays;
+    if (!id) {
+      return NextResponse.json({ error: 'Missing equipment id' }, { status: 400 });
+    }
+    // Convert id to number if possible
+    if (typeof id === 'string' && !isNaN(Number(id))) {
+      id = Number(id);
+    }
+    // First, check if equipment exists and belongs to the clinic
+    const existing = await prisma.equipment.findUnique({ where: { id } });
+    if (!existing || existing.clinicId !== payload.clinicId) {
+      return NextResponse.json({ error: 'Equipment not found or unauthorized' }, { status: 404 });
+    }
+    const updated = await prisma.equipment.update({
+      where: { id },
+      data: updateData,
+    });
+    return NextResponse.json({ equipment: updated });
+  } catch (e) {
+    console.error('PUT /api/clinic/equipment error:', e);
+    return NextResponse.json({ error: 'Failed to update equipment', details: e?.message || e }, { status: 500 });
+  }
+}
 export async function DELETE(req: NextRequest) {
   const auth = req.headers.get('authorization');
   if (!auth || !auth.startsWith('Bearer ')) {
