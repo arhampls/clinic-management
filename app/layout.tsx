@@ -5,8 +5,7 @@ import './globals.css'
 
 export const metadata: Metadata = {
   title: 'Clinic CRM - by Silledif',
-  description: 'Created with v0',
-  generator: 'v0.dev',
+  description: 'Clinic management software',
 }
 
 export default function RootLayout({
@@ -25,6 +24,8 @@ html {
 }
         `}</style>
         <title>Clinic CRM - by Silledif</title>
+        <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6521814811644379"
+     crossOrigin="anonymous"></script>
       </head>
       <body className={GeistSans.className}>
         {children}
